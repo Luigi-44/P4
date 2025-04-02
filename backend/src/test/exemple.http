@@ -7,8 +7,7 @@ GET http://localhost:3000/api/users
 Content-Type: application/json
 
 ###
-
-POST http://localhost:3000/api/users
+POST  http://localhost:3000/api/users
 Content-Type: application/json
 
 {
@@ -17,3 +16,6 @@ Content-Type: application/json
   "password" : "laMenace",
   "image" : "image ici"
 }
+###
+DELETE http://localhost:3000/api/users/2
+Content-Type: application/json

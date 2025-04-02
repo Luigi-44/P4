@@ -1,5 +1,3 @@
-// Dans ../model/usersModel.ts
-
 import { connectionBDD } from '../database/configBDD'; // Importez votre connexion à la base de données
 
 // Fonction pour récupérer tous les utilisateurs
@@ -16,6 +14,14 @@ export const getAllUsers = (callback: Function) => {
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const addUser = (userData: any, callback: Function) => {
   connectionBDD.query('INSERT INTO Users SET ?', userData, (err, results) => {
+    if (err) return callback(err, null);
+    return callback(null, results);
+  });
+};
+
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export const deleteUser = (userId: number, callback: Function) => {
+  connectionBDD.query('DELETE FROM Users WHERE id = ?', [userId], (err, results) => {
     if (err) return callback(err, null);
     return callback(null, results);
   });

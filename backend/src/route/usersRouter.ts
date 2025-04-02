@@ -7,6 +7,8 @@ const router = express.Router();
 router.get('/users', userController.getUsers);
 //Route Pour inserer un user
 router.post('/users', userController.addUsers)
+// Route pour supprimer un utilisateur
+router.delete('/users/:id', userController.deleteUsers);
 
 export default router;
 
