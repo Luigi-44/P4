@@ -1,31 +1,22 @@
-import { connectionBDD } from '../database/configBDD'; // Assure-toi que la connexion MySQL est correctement configurée
-import type { RowDataPacket } from 'mysql2'; // Type pour définir les résultats des requêtes
+// Dans ../model/usersModel.ts
 
-// Définir l'interface pour un utilisateur
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-}
+import { connectionBDD } from '../database/configBDD'; // Importez votre connexion à la base de données
 
-// Récupérer tous les utilisateurs
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const getAllUsers = (callback: (err: any, users: User[] | null) => void) => {
-  const query = 'SELECT * FROM Users'; // La requête SQL pour récupérer tous les utilisateurs
-  
-  connectionBDD.query(query, (err, results) => {
-    if (err) {
-      return callback(err, null);
-    }
-
-    // Casting des résultats en tableau d'objets de type User
-    const users = (results as RowDataPacket[]).map((row) => ({
-      id: row.id,
-      username: row.username,
-      email: row.email,
-    }));
-
-    callback(null, users);
+// Fonction pour récupérer tous les utilisateurs
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export const getAllUsers = (callback: Function) => {
+  connectionBDD.query('SELECT * FROM Users', (err, results) => {
+    if (err) return callback(err, null);
+    return callback(null, results);
   });
 };
 
+// Fonction pour ajouter un utilisateur
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const addUser = (userData: any, callback: Function) => {
+  connectionBDD.query('INSERT INTO Users SET ?', userData, (err, results) => {
+    if (err) return callback(err, null);
+    return callback(null, results);
+  });
+};

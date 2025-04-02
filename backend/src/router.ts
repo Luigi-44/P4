@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { getUsers } from './controller/usersController'; // Import du contrôleur
+import { getUsers } from './controller/usersController'; // Assure-toi que le chemin est correct
 
 const router = Router();
 
 // Route pour récupérer tous les utilisateurs
-router.get('/users', getUsers); // Lors de la requête GET sur /users, appeler la fonction getUsers du contrôleur
+router.get('/users', getUsers); // Cette route sera accessible via /api/users
 
 export default router;
