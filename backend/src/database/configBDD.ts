@@ -5,7 +5,7 @@ dotenv.config();
 
 const { DB_PORT } = process.env;
 
-export const connection = mysql2.createConnection({
+export const connectionBDD = mysql2.createConnection({
   host: process.env.DB_HOST,
   port: Number.parseInt(DB_PORT as string),
   user: process.env.DB_USER,
@@ -15,7 +15,7 @@ export const connection = mysql2.createConnection({
 
 export const initDB = () => {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  connection.connect((err: any) => {
+  connectionBDD.connect((err: any) => {
     if (err) {
       console.error('❌ Erreur de connexion à MySQL :', err);
       return;
