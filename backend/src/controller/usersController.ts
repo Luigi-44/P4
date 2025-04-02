@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { getAllUsers, addUser, deleteUser } from '../model/usersModel';
+import { getAllUsers, addUser, deleteUser, updateUser } from '../model/usersModel';
 
 // Contrôleur pour récupérer tous les utilisateurs
 export const getUsers = (req: Request, res: Response) => {
@@ -70,6 +70,44 @@ export const deleteUsers = (req: Request, res: Response): void => {
     res.status(200).json({
       message: 'Utilisateur supprimé avec succès',
       userId: userId
+    });
+  });
+};
+
+export const updateUsers = (req: Request, res: Response): void => {
+  const userId = Number.parseInt(req.params.id);
+  const userData = req.body;
+  
+  // Vérification que l'ID est un nombre valide
+  if (Number.isNaN(userId)) {
+    res.status(400).json({ message: 'ID utilisateur invalide' });
+    return;
+  }
+  
+  // Vérification que les données sont présentes
+  if (Object.keys(userData).length === 0) {
+    res.status(400).json({ message: 'Aucune donnée fournie pour la mise à jour' });
+    return;
+  }
+  
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    updateUser(userId, userData, (err: any, result: any) => {
+    if (err) {
+      console.error('Erreur lors de la mise à jour de l\'utilisateur:', err);
+      res.status(500).json({ message: 'Erreur serveur' });
+      return;
+    }
+    
+    // Vérifier si un utilisateur a été mis à jour
+    if (result.affectedRows === 0) {
+      res.status(404).json({ message: 'Aucun utilisateur trouvé avec cet ID' });
+      return;
+    }
+    
+    res.status(200).json({
+      message: 'Utilisateur mis à jour avec succès',
+      userId: userId,
+      changes: userData
     });
   });
 };

@@ -9,6 +9,8 @@ router.get('/users', userController.getUsers);
 router.post('/users', userController.addUsers)
 // Route pour supprimer un utilisateur
 router.delete('/users/:id', userController.deleteUsers);
+// Route pour mettre à jour un utilisateur
+router.put('/users/:id', userController.updateUsers);
 
 export default router;
 

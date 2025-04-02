@@ -26,3 +26,12 @@ export const deleteUser = (userId: number, callback: Function) => {
     return callback(null, results);
   });
 };
+
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const updateUser = (userId: number, userData: any, callback: Function) => {
+  connectionBDD.query('UPDATE Users SET ? WHERE id = ?', [userData, userId], (err, results) => {
+    if (err) return callback(err, null);
+    return callback(null, results);
+  });
+};
