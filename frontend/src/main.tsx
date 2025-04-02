@@ -2,6 +2,7 @@ import { StrictMode } from "react"; // Aide à détecter les erreurs et les mauv
 import { createRoot } from "react-dom/client"; // Crée la racine React dans le DOM pour initialiser le rendu de l'application React
 import { RouterProvider, createBrowserRouter } from "react-router-dom"; // Crée un provider (RouterProvider) et un router (createBrowserRouter) pour gérer les routes de l'application React
 import Accueil from "../pages/accueil/accueil.tsx";
+import "./App.css";
 import App from "./App.tsx";
 import "./index.css";
 

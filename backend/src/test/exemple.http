@@ -30,3 +30,14 @@ Content-Type: application/json
   "password" : "MangeMort",
   "image" : "image pas la :)"
 }
+
+###
+GET http://localhost:3000/api/categories
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/api/sitesbycategories
+Content-Type: application/json
+
+###

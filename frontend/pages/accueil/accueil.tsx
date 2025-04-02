@@ -1,10 +1,13 @@
+import BentoDisplay from "../../components/bentoDisplay/bentoDisplay";
+import Categories from "../../components/categories/categories";
 import "./accueil.css";
 
-function Accueil () {
+function Accueil() {
   return (
-  <div>
-    <p>Accueil</p>
-  </div>
+    <div id="accueilStyle">
+      <Categories />
+      <BentoDisplay />
+    </div>
   );
 }
 
