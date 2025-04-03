@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import addIcon from "../../assets/icon/addIcon.png";
 import AjoutCategories from "../ajoutCategories/ajoutCatego";
 import "./bentoDivertissement.css";
 
@@ -60,10 +61,10 @@ function BentoDisplay() {
           </div>
         ))}
 
-        <div className="modal-container">
-          <button type="button" onClick={() => setIsModalOpen(true)}>
-            Ajouter une Catégorie
-          </button>
+        {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+        <div className="modal-container" onClick={() => setIsModalOpen(true)}>
+          <span>Ajouter une Catégorie</span>
+          <img src={addIcon} alt="Ajouter une catégorie" />
         </div>
         <AjoutCategories
           isOpen={isModalOpen}
