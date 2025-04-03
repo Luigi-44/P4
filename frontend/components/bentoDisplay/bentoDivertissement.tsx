@@ -29,6 +29,11 @@ function BentoDisplay() {
     fetchSites();
   }, []);
 
+  const getFirstImage = (images: string) => {
+    // Prend la première image si plusieurs sont séparées par des virgules
+    return images.split(",")[0].trim();
+  };
+
   return (
     <section className="sectionBite">
       <section id="bentoDisplay">
@@ -38,11 +43,20 @@ function BentoDisplay() {
               <h2>{site.category_name}</h2>
             </div>
             <div id="bentoDisplay-content">
-              <a href={site.images} target="_blank" rel="noopener noreferrer">
-                {site.images ? (
-                  <img src={site.images} alt={site.images} />
-                ) : (
-                  <p>{site.images}</p>
+              <a href={site.urls} target="_blank" rel="noopener noreferrer">
+                {site.images && (
+                  <img
+                    src={`http://localhost:3000/assets/${getFirstImage(
+                      site.images
+                    )}`}
+                    alt={site.urls}
+                    className="site-logo"
+                    crossOrigin="anonymous"
+                    onError={(e) => {
+                      console.log("Erreur de chargement:", site.images);
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
                 )}
               </a>
             </div>
