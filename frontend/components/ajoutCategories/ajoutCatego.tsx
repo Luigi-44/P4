@@ -90,13 +90,14 @@ const AjoutCategories = ({
               />
             </div>
             <div className="form-group">
-              <label htmlFor="categoryImage">Image du site</label>
-              <select id="categoryImage" name="categoryImage" required>
-                <option value="">Sélectionnez une image</option>
-                <option value="spotify-logo.png">Spotify</option>
-                <option value="youtube-logo.png">YouTube</option>
-                {/* Ajoutez d'autres options selon vos images disponibles */}
-              </select>
+              <label htmlFor="categoryImage">Choisir une image</label>
+              <input
+                type="file"
+                id="categoryImage"
+                name="categoryImage"
+                accept="image/*"
+                required
+              />
             </div>
             <div className="modal-footer">
               <button

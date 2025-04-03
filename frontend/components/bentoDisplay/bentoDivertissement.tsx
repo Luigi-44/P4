@@ -3,8 +3,8 @@ import AjoutCategories from "../ajoutCategories/ajoutCatego";
 import "./bentoDivertissement.css";
 
 interface Site {
-  urls: string;
-  images: string;
+  url: string;
+  image: string;
   category_name: string;
 }
 
@@ -12,66 +12,67 @@ function BentoDisplay() {
   const [sites, setSites] = useState<Site[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const fetchSites = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:3000/api/sitesbycategories/allcategories"
-      );
-      const data = await response.json();
-      setSites(data);
-    } catch (error) {
-      console.error("Erreur:", error);
-    }
-  };
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    fetchSites();
+    fetch("http://localhost:3000/api/sitesbycategories/allcategories")
+      .then((response) => response.json())
+      .then((data) => setSites(data))
+      .catch((error) => console.error("Erreur:", error));
   }, []);
 
-  const getFirstImage = (images: string) => {
-    // Prend la première image si plusieurs sont séparées par des virgules
-    return images.split(",")[0].trim();
-  };
+  // Grouper les sites par catégorie une seule fois
+  const groupedSites = sites.reduce((acc, site) => {
+    if (!acc[site.category_name]) {
+      acc[site.category_name] = [];
+    }
+    acc[site.category_name].push(site);
+    return acc;
+  }, {} as Record<string, Site[]>);
 
   return (
     <section className="sectionBite">
       <section id="bentoDisplay">
-        {sites.map((site: Site) => (
-          <div key={site.urls} className="bentoDisplay-container">
+        {Object.entries(groupedSites).map(([category, categorySites]) => (
+          <div key={category} className="bentoDisplay-container">
             <div id="titreDisplay">
-              <h2>{site.category_name}</h2>
+              <h2>{category}</h2>
             </div>
             <div id="bentoDisplay-content">
-              <a href={site.urls} target="_blank" rel="noopener noreferrer">
-                {site.images && (
+              {categorySites.map((site) => (
+                <a
+                  key={site.url}
+                  href={site.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="image-container"
+                >
                   <img
-                    src={`http://localhost:3000/assets/${getFirstImage(
-                      site.images
-                    )}`}
-                    alt={site.urls}
+                    src={`http://localhost:3000/assets/${site.image}`}
+                    alt={site.url}
                     className="site-logo"
                     crossOrigin="anonymous"
                     onError={(e) => {
-                      console.log("Erreur de chargement:", site.images);
                       e.currentTarget.style.display = "none";
                     }}
                   />
-                )}
-              </a>
+                </a>
+              ))}
             </div>
           </div>
         ))}
+
         <div className="modal-container">
           <button type="button" onClick={() => setIsModalOpen(true)}>
             Ajouter une Catégorie
           </button>
         </div>
-
         <AjoutCategories
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          onSuccess={fetchSites}
+          onSuccess={() => {
+            fetch("http://localhost:3000/api/sitesbycategories/allcategories")
+              .then((response) => response.json())
+              .then((data) => setSites(data));
+          }}
         />
       </section>
     </section>

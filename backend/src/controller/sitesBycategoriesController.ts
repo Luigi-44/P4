@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import {
-  getAllSites,
+  getAllCategories,
   getDivertissement,
   getFacturation,
 } from "../model/sitesBycategoriesModel";
@@ -37,7 +37,7 @@ export const getFacturationSites = (req: Request, res: Response) => {
 
 export const getAllSitesByCategories = (req: Request, res: Response) => {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  getAllSites((err: Error | null, results: any[] | null) => {
+  getAllCategories((err: Error | null, results: any[] | null) => {
     if (err) {
       res.status(500).json({ message: "Erreur serveur" });
       return;

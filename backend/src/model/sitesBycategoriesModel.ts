@@ -53,27 +53,22 @@ export const getFacturation = (
   });
 };
 
-export const getAllSites = (
-  callback: (error: Error | null, results: SiteByCategory[] | null) => void
-) => {
-  const query = `SELECT 
-    c.name AS category_name, 
-    GROUP_CONCAT(s.url) AS urls,
-    GROUP_CONCAT(s.image) AS images
-FROM Categories c
-JOIN SitesFav_Categories sc ON c.id = sc.category_id
-JOIN SitesFav s ON sc.site_id = s.id
-GROUP BY c.id
-ORDER BY c.name;`;
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export const getAllCategories = (callback: Function) => {
+  const query = `
+    SELECT 
+      c.name AS category_name,
+      GROUP_CONCAT(s.url) AS urls,
+      GROUP_CONCAT(s.image) AS images
+    FROM Categories c
+    LEFT JOIN SitesFav_Categories sc ON c.id = sc.category_id
+    LEFT JOIN SitesFav s ON sc.site_id = s.id
+    GROUP BY c.name
+    ORDER BY c.name
+  `;
 
   connectionBDD.query(query, (err, results) => {
-    if (err) {
-      console.error(
-        "Erreur lors de la récupération des sites de divertissement:",
-        err
-      );
-      return callback(err, null);
-    }
-    return callback(null, results as SiteByCategory[]);
+    if (err) return callback(err, null);
+    return callback(null, results);
   });
 };
