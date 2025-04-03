@@ -1,15 +1,37 @@
 #categories {
-  border: 1px solid rgb(255, 255, 255);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 30%;
+  width: 30rem;
   height: 100vh;
+  border-right: 1px solid rgb(255, 255, 255);
   p {
     font-size: 3rem;
   }
   p:hover {
-    scale: 1.1;
+    scale: 1.05;
   }
+}
+.ligneStyle {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 80px;
+  gap: 5rem;
+  padding-right: 15px;
+  img {
+    width: 40px;
+  }
+}
+.ligneStyle:hover {
+  background-color: #ffffff53;
+  border-radius: 10px;
+}
+.ligneStyle-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }

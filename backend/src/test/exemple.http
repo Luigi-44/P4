@@ -37,7 +37,29 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/api/sitesbycategories
+POST  http://localhost:3000/api/categories
+Content-Type: application/json
+
+{
+  "id" : 3,
+  "name" : "Clients"
+}
+
+###
+
+GET http://localhost:3000/api/sitesbycategories/divertissement
+Content-Type: application/json
+
+###
+
+###
+
+GET http://localhost:3000/api/sitesbycategories/facturation
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/api/sitesbycategories/allcategories
 Content-Type: application/json
 
 ###

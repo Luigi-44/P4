@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import settingIcon from "../../assets/icon/settingIcon.png";
 import "./categories.css";
-
 interface Category {
   id: number;
   name: string;
@@ -18,11 +18,17 @@ function Categories() {
     };
     getData();
   }, []);
-  console.log(categories);
   return (
     <div id="categories">
       {categories.map((category) => (
-        <p key={category.id}>{category.name}</p>
+        <div key={category.id} className="ligneStyle">
+          <div className="ligneStyle-left">
+            <p>{category.name}</p>
+          </div>
+          <div className="ligneStyle-right">
+            <img src={settingIcon} alt="setting" />
+          </div>
+        </div>
       ))}
     </div>
   );

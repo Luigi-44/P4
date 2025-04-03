@@ -1,4 +1,4 @@
-import BentoDisplay from "../../components/bentoDisplay/bentoDisplay";
+import BentoDisplay from "../../components/bentoDisplay/bentoDivertissement";
 import Categories from "../../components/categories/categories";
 import "./accueil.css";
 
