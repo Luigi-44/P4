@@ -64,4 +64,49 @@ export const updateCategory = (req: Request, res: Response) => {
   );
 };
 
-export default { getCategories, addCategory, deleteCategory, updateCategory };
+export const createCategoryWithSite = (req: Request, res: Response) => {
+  const { categoryName, siteUrl, siteImage } = req.body;
+
+  // Validation des données
+  if (!categoryName || !siteUrl) {
+    res
+      .status(400)
+      .json({ message: "Le nom de la catégorie et l'URL du site sont requis" });
+    return;
+  }
+
+  const newCategory = { name: categoryName };
+  const newSite = { url: siteUrl, image: siteImage || null };
+
+  categoryModel.addCategoryWithSite(
+    newCategory,
+    newSite,
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    (err: any, result: any) => {
+      if (err) {
+        console.error("Erreur lors de l'ajout:", err);
+        if (err.code === "ER_DUP_ENTRY") {
+          res
+            .status(409)
+            .json({ message: "Cette catégorie ou ce site existe déjà" });
+          return;
+        }
+        res.status(500).json({ message: "Erreur serveur" });
+        return;
+      }
+
+      res.status(201).json({
+        message: "Catégorie et site ajoutés avec succès",
+        data: result,
+      });
+    }
+  );
+};
+
+export default {
+  getCategories,
+  addCategory,
+  deleteCategory,
+  updateCategory,
+  createCategoryWithSite,
+};
