@@ -4,8 +4,8 @@ import AjoutCategories from "../ajoutCategories/ajoutCatego";
 import "./bentoDivertissement.css";
 
 interface Site {
-  url: string;
-  image: string;
+  urls: string;
+  images: string;
   category_name: string;
 }
 
@@ -16,7 +16,10 @@ function BentoDisplay() {
   useEffect(() => {
     fetch("http://localhost:3000/api/sitesbycategories/allcategories")
       .then((response) => response.json())
-      .then((data) => setSites(data))
+      .then((data) => {
+        console.log("Données reçues:", data);
+        setSites(data);
+      })
       .catch((error) => console.error("Erreur:", error));
   }, []);
 
@@ -38,25 +41,38 @@ function BentoDisplay() {
               <h2>{category}</h2>
             </div>
             <div id="bentoDisplay-content">
-              {categorySites.map((site) => (
-                <a
-                  key={site.url}
-                  href={site.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="image-container"
-                >
-                  <img
-                    src={`http://localhost:3000/assets/${site.image}`}
-                    alt={site.url}
-                    className="site-logo"
-                    crossOrigin="anonymous"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                </a>
-              ))}
+              {categorySites.map((site) => {
+                // Séparer les URLs et images en tableaux
+                const urls = site.urls.split(",").map((url) => url.trim());
+                const images = site.images.split(",").map((img) => img.trim());
+
+                // Créer un élément pour chaque paire URL/image
+                return urls.map((url, index) => (
+                  <a
+                    key={url}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="image-container"
+                  >
+                    {images[index] && (
+                      <img
+                        src={`http://localhost:3000/assets/${images[index]}`}
+                        alt={url}
+                        className="site-logo"
+                        crossOrigin="anonymous"
+                        onError={(e) => {
+                          console.log(
+                            "URL de l'image qui a échoué:",
+                            `http://localhost:3000/assets/${images[index]}`
+                          );
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    )}
+                  </a>
+                ));
+              })}
             </div>
           </div>
         ))}
