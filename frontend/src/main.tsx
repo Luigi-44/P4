@@ -2,10 +2,10 @@ import { StrictMode } from "react"; // Aide à détecter les erreurs et les mauv
 import { createRoot } from "react-dom/client"; // Crée la racine React dans le DOM pour initialiser le rendu de l'application React
 import { RouterProvider, createBrowserRouter } from "react-router-dom"; // Crée un provider (RouterProvider) et un router (createBrowserRouter) pour gérer les routes de l'application React
 import Accueil from "../pages/accueil/accueil.tsx";
+import Client from "../pages/client/client.tsx";
 import "./App.css";
 import App from "./App.tsx";
 import "./index.css";
-
 const router = createBrowserRouter([
   // Déclare que dans router, je stock createBrowserRouter
   {
@@ -14,6 +14,10 @@ const router = createBrowserRouter([
       {
         path: "/", // La page Acceuil est disponible dans l'URL http://localhost:XXXX/
         element: <Accueil />, // La Page Accueil est un enfant de App
+      },
+      {
+        path: "/client",
+        element: <Client />,
       },
     ],
   },
