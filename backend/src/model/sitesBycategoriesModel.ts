@@ -53,8 +53,15 @@ export const getFacturation = (
   });
 };
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-export const getAllCategories = (callback: Function) => {
+interface CategoryResult {
+  category_name: string;
+  urls: string;
+  images: string;
+}
+
+export const getAllCategories = (
+  callback: (error: Error | null, results: CategoryResult[] | null) => void
+) => {
   const query = `
     SELECT 
       c.name AS category_name,
@@ -69,6 +76,6 @@ export const getAllCategories = (callback: Function) => {
 
   connectionBDD.query(query, (err, results) => {
     if (err) return callback(err, null);
-    return callback(null, results);
+    return callback(null, results as CategoryResult[]);
   });
 };

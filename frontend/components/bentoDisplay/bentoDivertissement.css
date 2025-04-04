@@ -5,6 +5,36 @@
   margin-left: 60px;
 }
 
+#titreDisplay {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  .icon-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .iconSet {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    opacity: 0; /* Image invisible par défaut */
+    transition: opacity 0.3s ease; /* Transition douce */
+  }
+
+  &:hover .iconSet {
+    opacity: 1; /* Image visible au hover */
+  }
+}
+
 .bentoDisplay-container {
   align-items: flex-start;
   border: 1px solid #ffffff;
@@ -208,4 +238,200 @@ h2 {
   gap: 0.5rem;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* Styles pour la modale d'édition des liens */
+.edit-links-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.edit-links-modal {
+  background-color: #ffffffec;
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.edit-links-modal h3 {
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+
+.edit-links-modal h3:after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background-color: #4caf50;
+  border-radius: 3px;
+}
+
+.links-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.link-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.link-url {
+  flex-grow: 1;
+  margin-right: 10px;
+  word-break: break-all;
+  color: #333;
+  font-weight: bold;
+  padding: 5px;
+  background-color: #fff;
+  border-radius: 3px;
+  border: 1px solid #eee;
+}
+
+.link-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-link-button,
+.delete-link-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.edit-link-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.delete-link-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.edit-link-form {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.edit-link-form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.edit-link-form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.edit-link-form-buttons button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-link-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.cancel-link-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.add-link-form {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.add-link-form h4 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.add-link-form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.add-link-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.close-modal-button {
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.close-modal-button:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
 }

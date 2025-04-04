@@ -61,7 +61,7 @@ const AjoutCategories = ({
     <div className="modal-overlay">
       <div className="modal">
         <div className="modal-header">
-          <h3>Ajouter une nouvelle catégorie</h3>
+          <span className="link-url">Ajouter une nouvelle catégorie</span>
           <button type="button" onClick={onClose} className="close-button">
             &times;
           </button>
