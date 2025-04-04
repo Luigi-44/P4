@@ -146,6 +146,7 @@ h2 {
 
 .site-logo {
   width: 40px;
+  height: 40px;
   object-fit: contain;
   padding: 0.2rem;
   background: rgba(255, 255, 255, 0.1);
@@ -200,4 +201,11 @@ h2 {
   margin: auto;
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }

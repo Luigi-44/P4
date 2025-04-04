@@ -5,7 +5,7 @@ import "./bentoDivertissement.css";
 
 interface Site {
   urls: string;
-  images: string;
+  images: string; // C'est une chaîne avec des images séparées par des virgules
   category_name: string;
 }
 
@@ -42,36 +42,37 @@ function BentoDisplay() {
             </div>
             <div id="bentoDisplay-content">
               {categorySites.map((site) => {
-                // Séparer les URLs et images en tableaux
-                const urls = site.urls.split(",").map((url) => url.trim());
-                const images = site.images.split(",").map((img) => img.trim());
+                // Séparer la chaîne d'images en tableau
+                const imageArray = site.images
+                  ? site.images.split(",").map((img) => img.trim())
+                  : [];
 
-                // Créer un élément pour chaque paire URL/image
-                return urls.map((url, index) => (
+                return (
                   <a
-                    key={url}
-                    href={url}
+                    key={site.urls}
+                    href={site.urls}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="image-container"
                   >
-                    {images[index] && (
+                    {imageArray.map((image, index) => (
                       <img
-                        src={`http://localhost:3000/assets/${images[index]}`}
-                        alt={url}
+                        key={`${site.urls}-${index}`}
+                        src={`http://localhost:3000/assets/${image}`}
+                        alt={site.urls}
                         className="site-logo"
                         crossOrigin="anonymous"
                         onError={(e) => {
                           console.log(
                             "URL de l'image qui a échoué:",
-                            `http://localhost:3000/assets/${images[index]}`
+                            `http://localhost:3000/assets/${image}`
                           );
                           e.currentTarget.style.display = "none";
                         }}
                       />
-                    )}
+                    ))}
                   </a>
-                ));
+                );
               })}
             </div>
           </div>

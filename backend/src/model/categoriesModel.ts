@@ -1,51 +1,53 @@
 import { connectionBDD } from "../database/configBDD";
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-export const getCategories = (callback: Function) => {
+export const getCategories = (
+  callback: (error: Error | null, results?: never) => void
+) => {
   connectionBDD.query("SELECT * FROM categories", (err, results) => {
-    if (err) return callback(err, null);
-    return callback(null, results);
+    if (err) return callback(err);
+    return callback(null, results as never);
   });
 };
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const addCategory = (category: any, callback: Function) => {
+export const addCategory = (
+  category: NewCategory,
+  callback: (error: Error | null, results?: never) => void
+) => {
   connectionBDD.query(
     "INSERT INTO categories SET ?",
     category,
     (err, results) => {
-      if (err) return callback(err, null);
-      return callback(null, results);
+      if (err) return callback(err);
+      return callback(null, results as never);
     }
   );
 };
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-export const deleteCategory = (categoryId: number, callback: Function) => {
+export const deleteCategory = (
+  categoryId: number,
+  callback: (error: Error | null, results?: never) => void
+) => {
   connectionBDD.query(
     "DELETE FROM categories WHERE id = ?",
     [categoryId],
     (err, results) => {
-      if (err) return callback(err, null);
-      return callback(null, results);
+      if (err) return callback(err);
+      return callback(null, results as never);
     }
   );
 };
 
 export const updateCategory = (
   categoryId: number,
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  category: any,
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  callback: Function
+  category: NewCategory,
+  callback: (error: Error | null, results?: never) => void
 ) => {
   connectionBDD.query(
     "UPDATE categories SET ? WHERE id = ?",
     [category, categoryId],
     (err, results) => {
-      if (err) return callback(err, null);
-      return callback(null, results);
+      if (err) return callback(err);
+      return callback(null, results as never);
     }
   );
 };
@@ -62,24 +64,46 @@ interface NewSite {
 }
 
 // 1. Ajouter une nouvelle catégorie
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-export const addNewCategory = (category: NewCategory, callback: Function) => {
+export const addNewCategory = (
+  category: NewCategory,
+  callback: (error: Error | null, results?: never) => void
+) => {
   const query = "INSERT INTO Categories (name) VALUES (?)";
 
   connectionBDD.query(query, [category.name], (err, categoryResult) => {
-    if (err) return callback(err, null);
-    return callback(null, categoryResult);
+    if (err) return callback(err);
+    return callback(null, categoryResult as never);
   });
 };
 
 // 2. Ajouter un nouveau site
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-export const addNewSite = (site: NewSite, callback: Function) => {
+export const addNewSite = (
+  site: NewSite,
+  callback: (error: Error | null, results?: never) => void
+) => {
+  // Vérification de l'URL
+  if (!site.url || typeof site.url !== "string" || site.url.trim() === "") {
+    return callback(new Error("URL invalide"));
+  }
+
+  // Vérification et définition de l'image par défaut
+  const imageValue =
+    typeof site.image === "string" && site.image.trim() !== ""
+      ? site.image
+      : "default.png";
+
   const query = "INSERT INTO SitesFav (url, image) VALUES (?, ?)";
 
-  connectionBDD.query(query, [site.url, site.image], (err, siteResult) => {
-    if (err) return callback(err, null);
-    return callback(null, siteResult);
+  // Log pour débugger
+  console.log("URL:", site.url);
+  console.log("Image:", imageValue);
+
+  connectionBDD.query(query, [site.url, imageValue], (err, siteResult) => {
+    if (err) {
+      console.log("Erreur SQL:", err); // Log pour débugger
+      return callback(err);
+    }
+    return callback(null, siteResult as never);
   });
 };
 
@@ -87,15 +111,13 @@ export const addNewSite = (site: NewSite, callback: Function) => {
 export const linkSiteToCategory = (
   siteId: number,
   categoryId: number,
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  callback: Function
+  callback: (error: Error | null, results?: never) => void
 ) => {
   const query =
     "INSERT INTO SitesFav_Categories (site_id, category_id) VALUES (?, ?)";
-
   connectionBDD.query(query, [siteId, categoryId], (err, result) => {
-    if (err) return callback(err, null);
-    return callback(null, result);
+    if (err) return callback(err);
+    return callback(null, result as never);
   });
 };
 
@@ -103,39 +125,41 @@ export const linkSiteToCategory = (
 export const addCategoryWithSite = (
   category: NewCategory,
   site: NewSite,
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  callback: Function
+  callback: (error: Error | null, results?: never) => void
 ) => {
   // 1. Ajouter la catégorie
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  addNewCategory(category, (categoryErr: any, categoryResult: any) => {
-    if (categoryErr) return callback(categoryErr, null);
+  addNewCategory(
+    category,
+    (
+      categoryErr: Error | null,
+      categoryResult: { insertId: number } | undefined
+    ) => {
+      if (categoryErr) return callback(categoryErr);
 
-    const categoryId = categoryResult.insertId;
+      if (!categoryResult) return callback(new Error("No category result"));
 
-    // 2. Ajouter le site
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    addNewSite(site, (siteErr: any, siteResult: any) => {
-      if (siteErr) return callback(siteErr, null);
+      const categoryId = categoryResult.insertId;
 
-      const siteId = siteResult.insertId;
+      // 2. Ajouter le site
+      addNewSite(
+        site,
+        (
+          siteErr: Error | null,
+          siteResult: { insertId: number } | undefined
+        ) => {
+          if (siteErr) return callback(siteErr);
 
-      // 3. Lier les deux
-      linkSiteToCategory(
-        siteId,
-        categoryId,
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        (linkErr: any, linkResult: any) => {
-          if (linkErr) return callback(linkErr, null);
+          if (!siteResult) return callback(new Error("No site result"));
 
-          // Retourner toutes les informations
-          return callback(null, {
-            category: { id: categoryId, ...category },
-            site: { id: siteId, ...site },
-            link: linkResult,
+          const siteId = siteResult.insertId;
+          // 3. Lier les deux
+          linkSiteToCategory(siteId, categoryId, (linkErr: Error | null) => {
+            if (linkErr) return callback(linkErr);
+            // Retourner toutes les informations
+            return callback(null, undefined);
           });
         }
       );
-    });
-  });
+    }
+  );
 };
